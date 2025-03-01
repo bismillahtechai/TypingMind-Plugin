@@ -1,88 +1,75 @@
 {
-  "name": "Iterative Web App Developer",
-  "description": "This plugin helps you develop web applications using an iterative approach. It guides you from initial concept to implementation with feedback loops at each step.",
-  "functionSpec": {
-    "name": "iterative_web_app_development",
-    "description": "Iteratively develop a web application from an initial idea through planning to code generation, with feedback loops at each step.",
-    "parameters": {
-      "type": "object",
-      "properties": {
-        "app_idea": {
-          "type": "string",
-          "description": "The initial app idea or concept to develop."
-        },
-        "step": {
-          "type": "string",
-          "enum": ["project_request", "technical_specification", "implementation_plan", "code"],
-          "description": "The current development step to execute."
-        },
-        "feedback": {
-          "type": "string",
-          "description": "Optional feedback to refine the output of the current step."
-        },
-        "project_request": {
-          "type": "string",
-          "description": "The finalized project request from a previous step."
-        },
-        "project_rules": {
-          "type": "string",
-          "description": "Technical constraints and rules for the project (tech stack, frameworks, etc.)."
-        },
-        "starter_template": {
-          "type": "string",
-          "description": "Information about the starter template to use."
-        },
-        "technical_specification": {
-          "type": "string",
-          "description": "The technical specification from a previous step."
-        },
-        "implementation_plan": {
-          "type": "string",
-          "description": "The implementation plan from a previous step."
-        },
-        "code_step_number": {
-          "type": "integer",
-          "description": "The implementation step number for code generation."
+    "uuid": "bf831831-84f6-43e1-aa6b-1f6274e89b5c",
+    "id": "iterative_web_app_developer",
+    "emoji": "🛠️",
+    "title": "Iterative Web App Developer",
+    "overviewMarkdown": "## Iterative Web App Developer\n\nThis plugin helps you develop web applications using an iterative approach. It guides you from initial concept to implementation with feedback loops at each step:\n\n1. Start with your app idea ➡ Get a detailed project request\n2. Refine the project request ➡ Generate technical specifications\n3. Refine the specifications ➡ Create implementation plan\n4. Generate code step-by-step\n\nYou can provide feedback at each step to refine the outputs before moving to the next stage.",
+    "openaiSpec": {
+        "name": "iterative_web_app_development",
+        "description": "Iteratively develop a web application from an initial idea through planning to code generation, with feedback loops at each step.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "app_idea": {
+                    "type": "string",
+                    "description": "The initial app idea or concept to develop."
+                },
+                "step": {
+                    "type": "string",
+                    "enum": ["project_request", "technical_specification", "implementation_plan", "code"],
+                    "description": "The current development step to execute."
+                },
+                "feedback": {
+                    "type": "string",
+                    "description": "Optional feedback to refine the output of the current step."
+                },
+                "project_request": {
+                    "type": "string",
+                    "description": "The finalized project request from a previous step."
+                },
+                "project_rules": {
+                    "type": "string",
+                    "description": "Technical constraints and rules for the project (tech stack, frameworks, etc.)."
+                },
+                "starter_template": {
+                    "type": "string",
+                    "description": "Information about the starter template to use."
+                },
+                "technical_specification": {
+                    "type": "string",
+                    "description": "The technical specification from a previous step."
+                },
+                "implementation_plan": {
+                    "type": "string",
+                    "description": "The implementation plan from a previous step."
+                },
+                "code_step_number": {
+                    "type": "integer",
+                    "description": "The implementation step number for code generation."
+                }
+            },
+            "required": [
+                "app_idea",
+                "step"
+            ]
         }
-      },
-      "required": ["app_idea", "step"]
-    }
-  },
-  "userSettings": {
-    "api_endpoint": {
-      "type": "string",
-      "default": "https://typingmind-plugin.onrender.com/full-workflow",
-      "description": "The endpoint URL for the iterative prompt chain API"
     },
-    "api_key": {
-      "type": "string",
-      "default": "",
-      "description": "Your Anthropic API key (if not configured on the server)"
-    }
-  },
-  "implementation": {
-    "type": "httpAction",
-    "httpMethod": "POST",
-    "url": "{api_endpoint}",
-    "headers": {
-      "Content-Type": "application/json"
-    },
-    "body": {
-      "app_idea": "{app_idea}",
-      "step": "{step}",
-      "feedback": "{feedback}",
-      "project_request": "{project_request}",
-      "project_rules": "{project_rules}",
-      "starter_template": "{starter_template}",
-      "technical_specification": "{technical_specification}",
-      "implementation_plan": "{implementation_plan}",
-      "code_step_number": {code_step_number},
-      "api_key": "{api_key}"
-    },
-    "postProcessing": {
-      "type": "handlebars",
-      "template": "{{#if error}}\n**Error:** {{error}}\n{{else}}\n### Web App Development: {{step}}\n\n{{result}}\n\n---\n\n{{#if (eq step \"project_request\")}}\n**Next steps:** \n1. Review the project request above\n2. Provide feedback to refine it or proceed to technical specification\n3. If ready to proceed, please also provide:\n   - Project rules (tech stack, frameworks, etc.)\n   - Starter template information\n{{/if}}\n\n{{#if (eq step \"technical_specification\")}}\n**Next steps:** \n1. Review the technical specification above\n2. Provide feedback to refine it or proceed to implementation plan\n{{/if}}\n\n{{#if (eq step \"implementation_plan\")}}\n**Next steps:** \n1. Review the implementation plan above\n2. Provide feedback to refine it or proceed to code generation\n3. If ready for code generation, specify which step number to implement\n{{/if}}\n\n{{#if (eq step \"code\")}}\n**Next steps:** \n1. Review the generated code above\n2. Provide feedback to refine it\n3. Proceed to the next implementation step\n{{/if}}\n{{/if}}"
-    }
-  },
-  "outputType": "renderMarkdown"
+    "userSettings": [
+        {
+            "name": "api_endpoint",
+            "label": "API Endpoint URL",
+            "description": "The endpoint URL for the iterative prompt chain API",
+            "default": "https://typingmind-plugin.onrender.com/full-workflow",
+            "required": true
+        },
+        {
+            "name": "api_key",
+            "label": "API Key",
+            "description": "Your Anthropic API key (if not configured on the server)",
+            "type": "password",
+            "required": false
+        }
+    ],
+    "code": "async function iterative_web_app_development(params, userSettings) {\n  try {\n    const endpoint = userSettings.api_endpoint || 'https://typingmind-plugin.onrender.com/full-workflow';\n    \n    const requestBody = {\n      app_idea: params.app_idea,\n      step: params.step,\n      feedback: params.feedback || '',\n      project_request: params.project_request || '',\n      project_rules: params.project_rules || '',\n      starter_template: params.starter_template || '',\n      technical_specification: params.technical_specification || '',\n      implementation_plan: params.implementation_plan || '',\n      code_step_number: params.code_step_number || 1,\n      api_key: userSettings.api_key || ''\n    };\n    \n    const response = await fetch(endpoint, {\n      method: 'POST',\n      headers: {\n        'Content-Type': 'application/json'\n      },\n      body: JSON.stringify(requestBody)\n    });\n    \n    if (!response.ok) {\n      const errorText = await response.text();\n      throw new Error(`Server error: ${response.status} - ${errorText}`);\n    }\n    \n    const data = await response.json();\n    \n    if (!data.success) {\n      throw new Error(data.error || 'Unknown server error');\n    }\n    \n    // Format the response with helpful next steps based on current step\n    let result = `### Web App Development: ${data.step}\\n\\n${data.result}\\n\\n---\\n\\n`;\n    \n    switch(data.step) {\n      case 'project_request':\n        result += `**Next steps:**\\n1. Review the project request above\\n2. Provide feedback to refine it or proceed to technical specification\\n3. If ready to proceed, please also provide:\\n   - Project rules (tech stack, frameworks, etc.)\\n   - Starter template information`;\n        break;\n      case 'technical_specification':\n        result += `**Next steps:**\\n1. Review the technical specification above\\n2. Provide feedback to refine it or proceed to implementation plan`;\n        break;\n      case 'implementation_plan':\n        result += `**Next steps:**\\n1. Review the implementation plan above\\n2. Provide feedback to refine it or proceed to code generation\\n3. If ready for code generation, specify which step number to implement`;\n        break;\n      case 'code':\n        result += `**Next steps:**\\n1. Review the generated code above\\n2. Provide feedback to refine it\\n3. Proceed to the next implementation step`;\n        break;\n    }\n    \n    return result;\n  } catch (error) {\n    return `**Error:** ${error.message}`;\n  }\n}",
+    "syncedAt": null
 } 
